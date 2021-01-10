@@ -129,7 +129,7 @@ function loader(){
     //   document.getElementById("found1").innerHTML = " ";
       document.getElementById("found").innerHTML = " ";
       console.log("Hello world! "+name);
-      var readData = db.collection("book").orderBy("date", "desc")
+      var readData = db.collection("bookrhaya").orderBy("date", "desc")
       .get()
       .then(function(querySnapshot) {
 
@@ -180,7 +180,7 @@ function loader(){
                 message: messagei
             };
 
-            db.collection("book").add(testers).then(function () {
+            db.collection("bookrhaya").add(testers).then(function () {
                     console.log("Document successfully updated!");
 
                     loader();
