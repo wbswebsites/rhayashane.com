@@ -1,0 +1,245 @@
+<html>
+  <head>
+    <link href="assets/css/style.css" rel="stylesheet" />
+
+    <link
+      href="assets/css/bootstrap.min.css"
+      rel="stylesheet"
+      id="bootstrap-css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Crimson+Text&display=swap"
+      rel="stylesheet"
+    />
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-3.3.1.min.js"
+    ></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-firestore.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <title>RSVP - Rushanka & Adnan</title>
+  </head>
+  <body
+    style="margin: 0 0 0 0; font-family: 'Crimson Text', serif;"
+    width="100%"
+  >
+    <div>
+      <table
+        align="center"
+        style="margin-top:25px;margin-bottom:25px; width:350px"
+      >
+        <tr>
+          <td
+            align="right"
+            style="width: 30%; color: #a19144; font-family: 'Crimson Text', serif; font-size: 1.3em;"
+          >
+            RUSHANKA
+          </td>
+          <td align="center">
+            <img src="assets/lifetree.PNG" height="60" />
+          </td>
+          <td
+            style="width: 30%; color: #a19144; font-family: 'Crimson Text', serif; font-size: 1.3em;"
+          >
+            ADNAN
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="height: 35px; width: 100%; background: white;">
+      <table align="center" width="100%" border="0">
+        <tr>
+          <td width="33%" align="right">
+            <h5>
+              <a
+                href="wedding.html"
+                style="color: #6b6b6b; text-decoration: underline;"
+                >wedding</a
+              >
+            </h5>
+          </td>
+          <td width="33%" align="center ">
+            <h5 style="color: #6b6b6b;"><b>rsvp</b></h5>
+          </td>
+          <td width="33%" align="left">
+            <h5>
+              <a
+                href="srilanka.html"
+                style="color: #6b6b6b; text-decoration: underline;"
+                >sri lanka</a
+              >
+            </h5>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <br /><br /><br /><br /><br />
+    <center>
+      <button
+        id="tester"
+        onclick="testero()"
+        class="btn"
+        style="background-color:#6b6b6b; padding-left: 20px; padding-right: 20px;"
+      >
+        <span style="color: white">Test</span></button
+      ><br /><br />
+      <form id="test-form" method="GET">
+        <div style="width: 500px">
+          <!-- <span class="help-block">Your name</span> -->
+          <textarea row="10" cols="50" id="myTextarea"></textarea>
+          <br />
+        </div>
+
+        <br />
+        <button
+          id="submit-form"
+          class="btn"
+          style="background-color:#6b6b6b; padding-left: 20px; padding-right: 20px;"
+        >
+          <span style="color: white">Confirm</span>
+        </button>
+        <br /><br /><br /><br /><br /><br /><br />
+      </form>
+
+      <div id="found"></div>
+
+      <p class="text-center" style="color:#c4758e ">
+        Made with <i class="glyphicon glyphicon-heart"></i><br /><a
+          href="http://www.weddingsbysonali.com/"
+          >Weddings By Sonali</a
+        >
+      </p>
+      <br />
+    </center>
+
+
+
+    <script>
+
+$(document).ready(function() {
+    $.ajax({
+        type: "GET",
+        url: "https://file.io/t2Gfd6  ",
+        dataType: "text",
+        success: function(data) {processData(data);}
+     });
+});
+
+// testerere='';
+// processData(testerere);
+
+var firebaseConfig = {
+        apiKey: "AIzaSyAxKWsLczr45ola3XmEmCnti_Bl5o_eVPc",
+        authDomain: "wbs-rush-adn.firebaseapp.com",
+        databaseURL: "https://wbs-rush-adn.firebaseio.com",
+        projectId: "wbs-rush-adn",
+        storageBucket: "wbs-rush-adn.appspot.com",
+        messagingSenderId: "92680720757",
+        appId: "1:92680720757:web:51bef5e02ca41bfc03033c"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      const db = firebase.firestore();
+
+function processData(allText) {
+    var allTextLines = allText.split(/\r\n|\n/);
+    var headers = allTextLines[0].split(',');
+    var lines = [];
+
+    for (var i=2; i<allTextLines.length; i++) {
+        var nameArr = allTextLines[i].split(',');
+
+        var docData = {
+          id: parseInt(nameArr[0]),
+          accessl: nameArr[1].trim().toLowerCase(),
+          inviteName: nameArr[2].trim(),
+          batch1: parseInt(nameArr[3]),
+          iporuwa: parseInt(nameArr[13]),
+          ireception: parseInt(nameArr[14]),
+          imehendi: parseInt(nameArr[12]),
+          iMehList: [nameArr[15],nameArr[16],nameArr[17],nameArr[18],nameArr[19],nameArr[20]],
+          iPorList: [nameArr[21],nameArr[22],nameArr[23],nameArr[24],nameArr[25],nameArr[26]],
+          iRecList: [nameArr[27],nameArr[28],nameArr[29],nameArr[30],nameArr[31],nameArr[32]],
+          contact: nameArr[33],
+          email: nameArr[34],
+          didMehSubmit: false,
+          didPorSubmit: false,
+          didRecSubmit: false
+        };
+
+        db.collection("guest")
+          .doc(nameArr[0])
+          .set(docData)
+          .then(function() {
+            console.log("Document successfully written! - " + nameArr[0]);
+          });
+        
+    }
+    console.log("Done success");
+
+}
+     
+      function testero() {
+        var name = document.getElementById("myTextarea").value;
+        var nameArr = name.split(",");
+        console.log("Array:" + nameArr[3]);
+
+        console.log("Hello world! " + name);
+
+        var docData = {
+          id: parse.Int(nameArr[0]),
+          namearray: [
+            nameArr[1],
+            nameArr[2].toLowerCase() + " " + nameArr[3].toLowerCase(),
+            nameArr[2].toLowerCase(),
+            nameArr[3].toLowerCase(),
+            nameArr[4].toLowerCase()
+          ],
+          iporuwa: nameArr[5],
+          imehendi: nameArr[6],
+          ireception: nameArr[7],
+          contactno: nameArr[8],
+          rporuwa: 0,
+          rmehendi: 0,
+          rreception: 0,
+
+        };
+
+        db.collection("guest")
+          .doc(nameArr[0])
+          .set(docData)
+          .then(function() {
+            console.log("Document successfully written!");
+          });
+
+        db.collection("guest")
+          .where("name", "==", name)
+          .get()
+          .then(function(querySnapshot) {
+            if (querySnapshot.empty == true) {
+              console.log("It's empty");
+              document.getElementById("found").innerHTML = "Paragraph changed!";
+            }
+
+            querySnapshot.forEach(function(doc) {
+              document.getElementById("found").innerHTML =
+                "Hey !" + doc.data().name;
+              // doc.data() is never undefined for query doc snapshots
+              console.log(doc.id, " => ", doc.data());
+            });
+          })
+          .catch(function(error) {
+            console.log("Error getting documents: ", error);
+          });
+      }
+    </script>
+  </body>
+  <html></html>
+</html>

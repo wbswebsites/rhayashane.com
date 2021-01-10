@@ -1,0 +1,151 @@
+<html>
+
+<head>
+    <link href="assets/css/style.css" rel="stylesheet">
+
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Text&display=swap" rel="stylesheet">
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-firestore.js"></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+
+    <title>Rushanka & Adnan - Address Request</title>
+</head>
+
+<body style="margin: 0 0 0 0; font-family: 'Crimson Text', serif;" width="100%">
+    <div>
+        <a href="index.html">
+            <table align="center" style="margin-top:25px;margin-bottom:25px; width:350px">
+                <tr>
+                    <td align="right"
+                        style="width: 30%; color: #a19144; font-family: 'Crimson Text', serif; font-size: 1.3em;">
+                        RUSHANKA
+                    </td>
+                    <td align="center">
+                        <img src="assets/lifetree.PNG" height="60">
+                    </td>
+                    <td style="width: 30%; color: #a19144; font-family: 'Crimson Text', serif; font-size: 1.3em;">
+                        ADNAN
+                    </td>
+                </tr>
+            </table>
+        </a></div>
+    <center>
+        <div style="height: 35px; width: 100%; background:#f7f7f7; ">
+            <table align="center" width=80% border=0 style="max-width: 500px; " border="1">
+                <tr>
+                    <td style="padding-top: 7px;"><a href="countdown.html">countdown</a></td>
+                    <td style="padding-top: 7px;"><a href="rsvp.html">rsvp</a></td>
+                    <td style="padding-top: 7px; text-align: center;"><a href="addr.html">address request</a></td>
+                    <td style="padding-top: 7px; text-align: right;"><a href="guestb.html">guestbook</a></td>
+                </tr>
+            </table>
+        </div>
+    </center>
+
+
+
+    <br /><br /><br />
+    <center>
+        <h3>Address Request</h3>
+
+        <br /><br />
+        <div style="width: 350px">
+            <!-- <span class="help-block">Your name</span> -->
+            <input id="textinput" type="text" placeholder="Enter your access code" class="form-control input-md text-center">
+
+            <br />
+            <button id="tester" onclick="testero()" class="btn"
+                style="background-color:#6b6b6b; padding-left: 20px; padding-right: 20px;">
+                <span style="color: white">Search</span></button </div> <br />
+            <div id="loading"></div>
+            <div id="empty"></div>
+            <div id="found1"></div>
+            <div id="found"></div>
+            <br /><br /><br /><br /><br /><br /><br />
+            <p class="text-center" style="color:#c4758e ">
+                Made with <i class="glyphicon glyphicon-heart"></i><br /><a
+                    href="http://www.weddingsbysonali.com/">Weddings By Sonali</a>
+            </p>
+            <br />
+    </center>
+
+
+    <script>
+        var truthStore = {
+            id: 0,
+            imehendi: 0,
+            cur: -1,
+            found: []
+        }
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyAxKWsLczr45ola3XmEmCnti_Bl5o_eVPc",
+            authDomain: "wbs-rush-adn.firebaseapp.com",
+            databaseURL: "https://wbs-rush-adn.firebaseio.com",
+            projectId: "wbs-rush-adn",
+            storageBucket: "wbs-rush-adn.appspot.com",
+            messagingSenderId: "92680720757",
+            appId: "1:92680720757:web:51bef5e02ca41bfc03033c"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const db = firebase.firestore();
+
+        function testero() {
+            var address = {
+                name: "test"
+            };
+            document.getElementById("loading").innerHTML = "<br><BR><img src='assets/spinner.gif' height=50 />";
+            truthStore.cur = -1;
+            var name = document.getElementById("textinput").value.toLowerCase();
+            document.getElementById("empty").innerHTML = " ";
+            document.getElementById("found1").innerHTML = " ";
+            document.getElementById("found").innerHTML = " ";
+            console.log("Hello world! " + name);
+            var readData = db.collection("guest").where('accessl','==',name)
+                .get()
+                .then(function (querySnapshot) {
+                    if (querySnapshot.empty == true) {
+                        console.log("It's empty");
+                        document.getElementById("loading").innerHTML = " ";
+                        document.getElementById("empty").innerHTML =
+                            "<br><br>Access code entered is incorrect. <br>Plese recheck and enter.";
+                        document.getElementById("found1").innerHTML = " ";
+                        document.getElementById("found").innerHTML = " ";
+                    }
+
+                    querySnapshot.forEach(function (doc) {
+
+                        document.getElementById("loading").innerHTML = " ";
+                        if (truthStore.cur == -1)
+                            document.getElementById("found1").innerHTML +=
+                            "<br> Pleases select your name<br><br>";
+                        //   console.log("<br>Hey ! <a href='rsvpguest.html?id="+ doc.data().id +"'> ");
+                        document.getElementById("found").innerHTML += "<span style='font-size:1.2em'><a href='addr2.html?id=" + doc.data()
+                            .id + "'>" + doc.data().namearray[0] + "</a><br><br></span>";
+
+                        truthStore.cur++;
+                        truthStore.found[truthStore.cur] = doc.data();
+
+                        // doc.data() is never undefined for query doc snapshots
+                        console.log(doc.id, " => ", doc.data());
+                    });
+                })
+                .catch(function (error) {
+                    console.log("Error getting documents: ", error);
+                });
+        }
+    </script>
+</body>
+<html>
+
+</html>
+
+</html>

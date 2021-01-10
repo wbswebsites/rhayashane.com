@@ -1,0 +1,196 @@
+
+
+<html>
+<head>
+  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+  <link href="assets/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text&display=swap" rel="stylesheet">
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Satisfy&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Tangerine&display=swap" rel="stylesheet">
+
+	<script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-firestore.js"></script>
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+
+
+  <title>Rhaya & Ashane</title>
+</head>
+<body style="margin: 0 0 0 0; font-family: 'Crimson Text', serif; backgroud-color:#F2F0ED" width="100%">
+  <a href="index.html">
+		<div class="titleName">
+    Rhaya & Ashane
+  </div>
+</a>
+  <center><div style="height: 35px; width: 100%; background:#813467; ">
+    <table align="center" width=80% style="max-width: 700px; " border=0>
+      <tr>
+        <!-- <td width=33% align="right"><h5><a href='wedding.html' style="color: #6b6b6b; text-decoration: underline;">wedding</a></h5></td> -->
+        <!-- <td>home</td> -->
+        <!-- <td style="padding-top: 7px; color: grey; text-decoration: none;"><a href="index.html">welcome</a></td> -->
+        <td style="padding-top: 8px; width:16.6%; text-align:center"><a href="wedding.html" class="tablink">Wedding Program</a></td>
+        <td style="padding-top: 8px; width:16.6%; text-align:center"><a href="rsvp.html" class="tablink">RSVP</a></td>
+        <td style="padding-top: 8px; width:16.6%; text-align:center"><a href="accom.html" class="tablink">Accomodation</a></td>
+        <td style="padding-top: 8px; width:16.6%; text-align:center"><a href="info.html" class="tablink">Info</a></td>
+        <td style="padding-top: 8px; width:16.6%; text-align:center"><a href="live.html" class="tablink">Livestream</a></td>
+        <td style="padding-top: 8px; width:16.6%; text-align:center"><a href="guestb.html" class="tablink">Guestbook</a></td>
+      </tr>
+    </table>
+  </div></center>
+
+
+
+
+    <br /><br /><br />
+    <center>
+      <h3>Guestbook</h3>
+      <br />
+        <div style="width: 350px">
+
+          <!-- <span class="help-block">Your name</span> -->
+          <input
+            id="name"
+            name="name"
+            type="text"
+            placeholder="Enter your name"
+            class="form-control input-md text-center"
+            required=""
+          />
+          <br />
+          <textarea id="message" class="form-control input-md text-center" rows="5" cols="30" placeholder="Enter a message."></textarea>
+          <br>
+          <button
+        id="tester"
+        onclick="putnote()"
+        class="btn"
+        style="background-color:#6b6b6b; padding-left: 20px; padding-right: 20px;"
+      >
+        <span style="color: white">Submit</span></button
+        </div>
+
+        <br />
+<div id="loading"></div>
+      <div id="empty"></div>
+      <div id="guestnotes"></div>
+<div id="found"></div>
+<br /><br /><br /><br /><br /><br /><br />
+      <p class="text-center" style="color:#c4758e ">
+        Made with <i class="glyphicon glyphicon-heart"></i><br /><a
+          href="http://www.weddingsbysonali.com/"
+          >Weddings By Sonali</a
+        >
+      </p>
+      <br />
+    </center>
+
+
+    <script>
+
+    var truthStore = {
+      id:0,
+      imehendi:0,
+      cur:-1,
+      found:[]
+    }
+
+    $("#fname").click( function(){
+   if( $(this).is(':checked') ) {
+     showChildQuestions();
+   }
+ });
+
+      var firebaseConfig = {
+      apiKey: "AIzaSyAxKWsLczr45ola3XmEmCnti_Bl5o_eVPc",
+      authDomain: "wbs-rush-adn.firebaseapp.com",
+      databaseURL: "https://wbs-rush-adn.firebaseio.com",
+      projectId: "wbs-rush-adn",
+      storageBucket: "wbs-rush-adn.appspot.com",
+      messagingSenderId: "92680720757",
+      appId: "1:92680720757:web:51bef5e02ca41bfc03033c"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      const db = firebase.firestore();
+      loader();
+function loader(){
+    document.getElementById("loading").innerHTML = "<br><BR><img src='assets/spinner.gif' height=50 />";
+      truthStore.cur=-1;
+    //   var name = document.getElementById("textinput").value.toLowerCase();
+      document.getElementById("empty").innerHTML = " ";
+    //   document.getElementById("found1").innerHTML = " ";
+      document.getElementById("found").innerHTML = " ";
+      console.log("Hello world! "+name);
+      var readData = db.collection("book").orderBy("date", "desc")
+      .get()
+      .then(function(querySnapshot) {
+
+        console.log("Founded it+");
+        if(querySnapshot.empty==true){
+        console.log("It's empty");
+        document.getElementById("loading").innerHTML = " ";
+          document.getElementById("empty").innerHTML = "<br><BR>It's empty now.";
+        //   document.getElementById("found1").innerHTML = " ";
+          document.getElementById("found").innerHTML = " ";
+        }
+
+        querySnapshot.forEach(function(doc) {
+
+            console.log("Founded it+"+doc.data().message);
+        document.getElementById("loading").innerHTML = " ";
+        //   if(truthStore.cur==-1)
+        //     document.getElementById("guestnotes").innerHTML ="<br>Guest book<br>";
+
+            console.log("Founded it+"+doc.data().messagei);
+          document.getElementById("found").innerHTML +="<br><br>"+ doc.data().name+"<br><i><span style='font-size:1.2em'>"+doc.data().message+"</span></i>";
+
+          truthStore.cur++;
+          truthStore.found[truthStore.cur]=doc.data();
+
+        // doc.data() is never undefined for query doc snapshots
+        // console.log(doc.id, " => ", doc.data());
+
+    }
+        );
+      })
+      .catch(function(error) {
+        console.log("Error getting documents: ", error);
+      });
+}
+
+
+      function putnote(){
+
+            var namei = document.getElementById("name").value;
+            var messagei = document.getElementById("message").value;
+            datei=new Date();
+
+            console.log("Meh Name: " + messagei);
+            testers = {
+                date: datei,
+                name: namei,
+                message: messagei
+            };
+
+            db.collection("book").add(testers).then(function () {
+                    console.log("Document successfully updated!");
+
+                    loader();
+                })
+                .catch(function (error) {
+                    console.error("Error writing document: ", error);
+                });
+      }
+
+    </script>
+  </body>
+  <html></html>
+</html>

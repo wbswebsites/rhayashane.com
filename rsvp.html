@@ -1,0 +1,154 @@
+
+<html>
+	<head>
+		<link href="assets/css/style.css" rel="stylesheet">
+
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="https://fonts.googleapis.com/css?family=Crimson+Text&display=swap" rel="stylesheet">
+		<script src="assets/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<meta charset="utf-8">
+		<link href="https://fonts.googleapis.com/css?family=Satisfy&display=swap" rel="stylesheet">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="https://fonts.googleapis.com/css?family=Tangerine&display=swap" rel="stylesheet">
+		<title>Rhaya & Ashane</title>
+	</head>
+	<body style="margin: 0 0 0 0; font-family: 'Crimson Text', serif; backgroud-color:#F2F0ED" width="100%">
+		<a href="index.html">
+			<div class="titleName">
+	    Rhaya & Ashane
+	  </div>
+	</a>
+		<center><div style="height: 35px; width: 100%; background:#813467; ">
+			<table align="center" width=80% style="max-width: 700px; " border=0>
+				<tr>
+					<!-- <td width=33% align="right"><h5><a href='wedding.html' style="color: #6b6b6b; text-decoration: underline;">wedding</a></h5></td> -->
+					<!-- <td>home</td> -->
+					<!-- <td style="padding-top: 7px; color: grey; text-decoration: none;"><a href="index.html">welcome</a></td> -->
+					<td style="padding-top: 8px; width:16.6%; text-align:center"><a href="wedding.html" class="tablink">Wedding Program</a></td>
+					<td style="padding-top: 8px; width:16.6%; text-align:center"><a href="rsvp.html" class="tablink">RSVP</a></td>
+          <td style="padding-top: 8px; width:16.6%; text-align:center"><a href="accom.html" class="tablink">Accomodation</a></td>
+          <td style="padding-top: 8px; width:16.6%; text-align:center"><a href="info.html" class="tablink">Info</a></td>
+          <td style="padding-top: 8px; width:16.6%; text-align:center"><a href="live.html" class="tablink">Livestream</a></td>
+          <td style="padding-top: 8px; width:16.6%; text-align:center"><a href="guestb.html" class="tablink">Guestbook</a></td>
+				</tr>
+			</table>
+		</div></center>
+
+
+
+
+
+    <br /><br /><br />
+    <center>
+      <h3>RSVP</h3>
+
+      <br /><br />
+        <div style="width: 350px">
+          <!-- <span class="help-block">Your name</span> -->
+          <input
+            id="textinput"
+            name="name"
+            type="text"
+            placeholder="Enter your access code"
+            class="form-control input-md text-center"
+            required
+          />
+          <br />
+          <button
+        id="tester"
+        onclick="testero()"
+        class="btn"
+        style="background-color:#6b6b6b; padding-left: 20px; padding-right: 20px;"
+      >
+        <span style="color: white">Search</span></button
+        </div>
+
+        <br />
+<div id="loading"></div>
+      <div id="empty"></div>
+      <div id="found1"></div>
+<div id="found"></div>
+<br /><br /><br /><br /><br /><br /><br />
+      <p class="text-center" style="color:#c4758e ">
+        Made with <i class="glyphicon glyphicon-heart"></i><br /><a
+          href="http://www.weddingsbysonali.com/"
+          >Weddings By Sonali</a
+        >
+      </p>
+      <br />
+    </center>
+
+
+    <script>
+
+    var truthStore = {
+      id:0,
+      imehendi:0,
+      cur:-1,
+      found:[]
+    }
+
+    $("#fname").click( function(){
+   if( $(this).is(':checked') ) {
+     showChildQuestions();
+   }
+ });
+
+      var firebaseConfig = {
+      apiKey: "AIzaSyAxKWsLczr45ola3XmEmCnti_Bl5o_eVPc",
+      authDomain: "wbs-rush-adn.firebaseapp.com",
+      databaseURL: "https://wbs-rush-adn.firebaseio.com",
+      projectId: "wbs-rush-adn",
+      storageBucket: "wbs-rush-adn.appspot.com",
+      messagingSenderId: "92680720757",
+      appId: "1:92680720757:web:51bef5e02ca41bfc03033c"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      const db = firebase.firestore();
+
+    function testero() {
+      document.getElementById("loading").innerHTML = "<br><BR><img src='assets/spinner.gif' height=50 />";
+      truthStore.cur=-1;
+      var name = document.getElementById("textinput").value.toLowerCase();
+      document.getElementById("empty").innerHTML = " ";
+      document.getElementById("found1").innerHTML = " ";
+      document.getElementById("found").innerHTML = " ";
+      console.log("Hello world! "+name);
+      var readData = db.collection("guest")
+      .where('accessl','==',name)
+      .get()
+      .then(function(querySnapshot) {
+        if(querySnapshot.empty==true){
+        console.log("It's empty");
+        document.getElementById("loading").innerHTML = " ";
+          document.getElementById("empty").innerHTML = "<br><BR>Access code entered is incorrect. <br>Plese recheck and enter.";
+          document.getElementById("found1").innerHTML = " ";
+          document.getElementById("found").innerHTML = " ";
+        }
+        querySnapshot.forEach(function(doc) {
+        document.getElementById("loading").innerHTML = " ";
+          if(truthStore.cur==-1)
+            document.getElementById("found1").innerHTML +="<br> Pleases select your name<br><br>";
+          console.log("<br>Hey ! <a href='rsvpguest.html?id="+ doc.data().id +"'> ");
+          document.getElementById("found").innerHTML += "<span style='font-size:1.2em'><a href='rsvpguest.html?id="+ doc.data().id +"'>"+doc.data().namearray[0]+"</a><br><br></span>";
+
+          truthStore.cur++;
+          truthStore.found[truthStore.cur]=doc.data();
+
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+        }
+        );
+      })
+      .catch(function(error) {
+        console.log("Error getting documents: ", error);
+      });
+    }
+
+    </script>
+  </body>
+  <html></html>
+</html>

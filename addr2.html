@@ -1,0 +1,194 @@
+<html>
+	<head>
+		<link href="assets/css/style.css" rel="stylesheet">
+
+		<link href="assets/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+		<link href="https://fonts.googleapis.com/css?family=Crimson+Text&display=swap" rel="stylesheet">
+		<script src="assets/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+    <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-firestore.js"></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script> 
+    
+		<title>Rushanka & Adnan - Address Request</title>
+	</head>
+	<body style="margin: 0 0 0 0; font-family: 'Crimson Text', serif;" width="100%">
+		<div>
+			<a href="index.html"><table align="center" style="margin-top:25px;margin-bottom:25px; width:350px">
+				<tr>
+					<td align="right" style="width: 30%; color: #a19144; font-family: 'Crimson Text', serif; font-size: 1.3em;">
+						RUSHANKA
+					</td>
+					<td align="center" style="">
+						<img src="assets/lifetree.PNG" height="60">
+					</td>
+					<td style="width: 30%; color: #a19144; font-family: 'Crimson Text', serif; font-size: 1.3em;">
+						ADNAN
+					</td>
+				</tr>
+			</table></a></div>
+		<center><div style="height: 35px; width: 100%; background:#f7f7f7; ">
+			<table align="center" width=80% border=0 style="max-width: 500px; " border="1">
+				<tr>
+					<!-- <td width=33% align="right"><h5><a href='wedding.html' style="color: #6b6b6b; text-decoration: underline;">wedding</a></h5></td> -->
+					<!-- <td>home</td> -->
+					<!-- <td style="padding-top: 7px; color: grey; text-decoration: none;"><a href="index.html">welcome</a></td> -->
+					<td style="padding-top: 7px;"><a href="countdown.html">countdown</a></td>
+					<td style="padding-top: 7px;"><a href="rsvp.html">rsvp</a></td>
+					<td style="padding-top: 7px; text-align: center;"><a href="addr.html">address request</a></td>
+					<td style="padding-top: 7px; text-align: right;"><a href="guestb.html">guestbook</a></td>
+				</tr>
+			</table>
+		</div></center>
+    <center>
+        <br><br>
+      <h3>Address Request</h3>
+        <br>
+        <div id="empty"></div>
+        <div id="guester"></div>
+<div id="loading"></div>
+        <div id="former" style="width: 350px; display:none;">
+            <!-- <span class="help-block">Your name</span> -->
+            <!-- <input id="textinput" type="text" placeholder="Enter your name" class="form-control input-md text-center"> -->
+            <br> <input id="address0" type="text" placeholder="Enter your contact number"
+                class="form-control input-md text-center" style="padding-top: 5px;">
+            <input id="address1" type="text" placeholder="Enter your address line 1"
+                class="form-control input-md text-center" style="margin-top: 5px;">
+            <input id="address2" type="text" placeholder="Enter your address line 2"
+                class="form-control input-md text-center" style="margin-top: 5px;">
+            <input id="address3" type="text" placeholder="Enter your city" class="form-control input-md text-center"
+                style="margin-top: 5px;">
+            <input id="address4" type="text" placeholder="Enter your state" class="form-control input-md text-center"
+                style="margin-top: 5px;">
+            <input id="address5" type="text" placeholder="Enter your zipcode" class="form-control input-md text-center"
+                style="margin-top: 5px;">
+            <input id="address6" type="text" placeholder="Enter your country" class="form-control input-md text-center"
+                style="margin-top: 5px;">
+            <br />
+            <div id="tester" onclick="rmehsubmit()" class="btn" style="background-color:#6b6b6b; padding-left: 20px; padding-right: 20px;">
+                <span style="color: white">Submit</span>
+            </div> <br><Br>
+            </div></div><br><br><br><br><br>
+                    <p class="text-center" style="color:#c4758e ">
+                Made with <i class="glyphicon glyphicon-heart"></i><br /><a
+                    href="http://www.weddingsbysonali.com/">Weddings
+                    By Sonali</a>
+            </p>
+            <br />
+    </center>
+
+    <script>
+        var truthStore = {
+            id: 0,
+            imehendi: 0,
+            cur: -1,
+            found: []
+        };
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyAxKWsLczr45ola3XmEmCnti_Bl5o_eVPc",
+            authDomain: "wbs-rush-adn.firebaseapp.com",
+            databaseURL: "https://wbs-rush-adn.firebaseio.com",
+            projectId: "wbs-rush-adn",
+            storageBucket: "wbs-rush-adn.appspot.com",
+            messagingSenderId: "92680720757",
+            appId: "1:92680720757:web:51bef5e02ca41bfc03033c"
+        };
+
+        function ShowHideDiv() {
+            LoopTest();
+            var chkYes = document.getElementById("rmeh");
+            var dvPassport = document.getElementById("mehlist");
+
+            dvPassport.style.display = chkYes.checked ? "block" : "none";
+        }
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        document.getElementById("loading").innerHTML = "<br><BR><img src='assets/spinner.gif' height=50 />";
+        const db = firebase.firestore();
+        const url = window.location; // http://google.com?id=test
+        const urlObject = new URL(url);
+        const id = parseInt(urlObject.searchParams.get("id"));
+        console.log("ID is: " + id);
+
+
+        db.collection("guest")
+            .where("id", "==", id)
+            .get()
+            .then(function (querySnapshot) {
+                if (querySnapshot.empty == true) {
+                    console.log("It's empty");
+                    document.getElementById("loading").innerHTML = " ";
+                    // document.getElementById("empty").innerHTML = "<a href=\"w">";
+                    window.location.replace("http://www.weddingsbysonali.com/rushanka-adnan/");
+                    
+                    // TO DO CHANGE ABOVE LAVAN
+                }
+
+                querySnapshot.forEach(function (doc) {
+                    if(doc.data().addressreqgiven){
+                        document.getElementById("guester").innerHTML = "<br><br><br><br><br><h4>" + doc.data().namearray[0].trim() +
+                        ", <br>you have already entered your address.</h2> ";
+                        document.getElementById("loading").innerHTML = " ";
+                    } else{
+                    document.getElementById("guester").innerHTML = "<h4>" + doc.data().namearray[0].trim() +
+                        ", <br>please enter your address.</h2> ";
+                        document.getElementById("loading").innerHTML = " ";
+                        document.getElementById("former").style.display="block";
+                    console.log("Found");}
+                });
+
+            })
+            .catch(function (error) {
+                console.log("Error getting documents: ", error);
+            });
+
+        function rmehsubmit() {
+            var addreq = [];
+            rmehnum = 6;
+            for (var i = 0; i <= rmehnum; i++) {
+                var test = "address" + i.toString();
+                addreq.push(document.getElementById(test).value);
+            }
+
+            console.log("Address Req array: " + addreq);
+            testers = {
+                addressreqgiven: true,
+                addressreq: addreq
+            };
+
+            db.collection("guest").doc(id).update(testers).then(function () {
+                    console.log("Document successfully updated!");
+
+                    window.location.replace("http://www.w3schools.com");
+                    // TO DO CHANGE ABOVE LAVAN
+                })
+                .catch(function (error) {
+                    console.error("Error writing document: ", error);
+                });
+        }
+
+
+        function LoopTest() {
+            document.getElementById("mehlister").innerHTML = "";
+
+            var e = document.getElementById("meh29");
+            var stop = e.options[e.selectedIndex].value;
+
+            var i = 0;
+            for (i = 1; i <= stop; i++) {
+                document.getElementById("mehlister").innerHTML +=
+                    "<br><input id=\"mehguest" + i + "\"  type=\"text\" name=\"mehguest" + i +
+                    "\" style=\"color:grey\" placeholder=\"Enter guest name " + i + "\"> <br>  ";
+            }
+        }
+    </script>
+</body>
+<html>
+
+</html>
+
+</html>
