@@ -19,10 +19,22 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-app.js"></script>
+
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+
+    <!-- <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.5.2/firebase-firestore.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
     <title>RSVP - Rushanka & Adnan</title>
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-firestore.js"></script>
+
+
   </head>
   <body
     style="margin: 0 0 0 0; font-family: 'Crimson Text', serif;"
@@ -83,7 +95,7 @@
     <center>
       <button
         id="tester"
-        onclick="testero()"
+        onclick="processData()"
         class="btn"
         style="background-color:#6b6b6b; padding-left: 20px; padding-right: 20px;"
       >
@@ -122,70 +134,125 @@
 
     <script>
 
-$(document).ready(function() {
-    $.ajax({
-        type: "GET",
-        url: "https://file.io/t2Gfd6  ",
-        dataType: "text",
-        success: function(data) {processData(data);}
-     });
-});
 
 // testerere='';
 // processData(testerere);
 
 var firebaseConfig = {
-        apiKey: "AIzaSyAxKWsLczr45ola3XmEmCnti_Bl5o_eVPc",
-        authDomain: "wbs-rush-adn.firebaseapp.com",
-        databaseURL: "https://wbs-rush-adn.firebaseio.com",
-        projectId: "wbs-rush-adn",
-        storageBucket: "wbs-rush-adn.appspot.com",
-        messagingSenderId: "92680720757",
-        appId: "1:92680720757:web:51bef5e02ca41bfc03033c"
-      };
+    apiKey: "AIzaSyAxKWsLczr45ola3XmEmCnti_Bl5o_eVPc",
+    authDomain: "wbs-rush-adn.firebaseapp.com",
+    databaseURL: "https://wbs-rush-adn.firebaseio.com",
+    projectId: "wbs-rush-adn",
+    storageBucket: "wbs-rush-adn.appspot.com",
+    messagingSenderId: "92680720757",
+    appId: "1:92680720757:web:51bef5e02ca41bfc03033c"
+  };
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
 
       const db = firebase.firestore();
 
-function processData(allText) {
-    var allTextLines = allText.split(/\r\n|\n/);
-    var headers = allTextLines[0].split(',');
-    var lines = [];
+function processData() {
 
-    for (var i=2; i<allTextLines.length; i++) {
-        var nameArr = allTextLines[i].split(',');
+var testere=[
+  "1,B1W0F,Irnthu, Shevan & Clara,3,Mr. Shevan Algama,Mrs. Irnthu Algama ,Clara,",
+"2,A5G1I,Tarea,1,Ms. Tarea Navaratne,,,",
+"3,D7A3F,Shalini,1,Ms. Shalini Leelananda,,,",
+"4,W0E4G,Shiyan,1,Mr. Shiyan Leelananda,,,",
+"5,K0M1N,Banu & Max,2,Ms. Banu Asokan,Mr. Max MacPhee,,",
+"6,Y6F4F,Sarah,1,Ms. Sarah Abeysena,,,",
+"7,I8D7T,Shankari, Rahul & Aariyan,3,Mr. Rahul Sreekumar,Mrs. Shankari Sreekumar,Aariyan,",
+"8,P7C0H,Tiasha,1,Ms. Tiasha Mathew,,,",
+"9,W9S9W,Sylvia,1,Ms. Sylvia To,,,",
+"10,D9Z9S,Sunela,1,Ms. Sunela Pathirana ,,,",
+"11,Z4G7S,Nilshika,1,Ms. Nilshika Weerasekara,,,",
+"12,Q0I6Q,Stephan,1,Mr. Stephan Perera ,,,",
+"13,J6L7V,Elizabeth,1,Ms. Elizabeth Gray ,,,",
+"14,Q1B6X,Menaka & Nishanth,2,Mr. Nishanth Newton,Mrs. Menaka Jeyanathan,,",
+"15,K2C8N,Manisha & Sanjaya,2,Mr. Sanjaya Attanayake,Ms. Manisha Abeysekara,,",
+"16,B5N1Q,Ruwanthi & Nelakshan,2,Mr. Nelakshan Muttettuwegama,Mrs. Ruwanthi Muttettuwegama,,",
+"17,F9A0D,Prasie,1,Mr. Prasie,,,",
+"18,E9T5U,Venette,1,Ms. Venette Ongsitco,,,",
+"19,G9W3U,Winnie,1,Ms. Winnie Luo,,,",
+"20,M6F4I,Sarla Fernando,1,Ms. Sarla Fernando,,,",
+"21,Y9W5M,Trou,2,Mr. Trou Selvaratnam,Mrs. Mary Selvaratnam,,",
+"23,A3T1Q,Babora, Aravinda, Ashley & Audrey,4,Dr. Aravinda Page,Dr. Mrs. Babora Page,Ashley ,Audrey",
+"24,F3V8G,Kshirabdhi & Chutti,2,Mr. Louis Page,Mrs. Kshirabdhi Page,,",
+"25,M9H6N,Louis,1,Mr. Louis Page Jr. ,,,",
+"26,L2B8E,Tara & Ella,2,Ms. Tara Page,Ella,,",
+"27,B9D9I,Rachel,1,Ms. Rachel Page ,,,",
+"28,D3S9X,Jeanie & Jonathan,2,Mr. Jonathan Mather,Mrs. Jeanie Mather,,",
+"29,T4H3A,Natasha,1,Ms. Natasha Mather,,,",
+"30,Z7C9P,Shamara, Henry, Chloe & Annie,4,Mr. Henry Pruitt,Dr. Mrs. Shamara Pruitt,Chloe,Annie",
+"31,G8W0C,Anuki, Greg, Liora & Caleb,4,Mr. Greg Turner,Mrs. Anuki Turner,Liora,Caleb",
+"32,M1V6N,Aneesha, Chito, Ella & Alyssa,4,Mr. Chito Jeyarajah,Mrs.  Aneesha Jeyarajah,Ella,Alyssa",
+"33,P4J4R,Anushka,1,Ms. Anushka Pereira,,,",
+"34,W0X8L,Yasmin Akka & Stuart,2,Mr. Stuart Devlin,Mes. Yasmin Devlin,,",
+"35,S1P1H,Sondra & Arjuna,2,Mr. Arjuna Dominic ,Ms. Sondra Dominic,,",
+"36,V0B8P,Indrajit,1,Mr. Indrajit Dominic ,,,",
+"37,O8Z4E,Emil & Janice,2,Mr. Emil Savundra Jr. ,Mrs. Janice Savundra Jr. ,,",
+"38,L0D8C,Fiona, Peter & Emily,3,Dr. Peter Savundra,Mrs. Fiona Savundra,Emily ,",
+"39,Y0Z0H,Tony Savundra,1,Mr. Tony Savundra,,,",
+"40,K2Y3Z,Pastor Robin & Rebecca,2,Pastor Rohin John,Mrs. Rebecca John,,",
+"41,R4P8M,Lalin & Ingrid,2,Pastor Lalin Gunasekara,Mrs. Ingrid Gunasekara,,",
+"42,C1A3U,Priscilla & Nelson,2,Mr. Nelson Dennis ,Mrs. Priscilla Dennis,,",
+"43,M3S4J,Shirani & Ryan,2,Mr. Ryan Gomes,Mrs. Shirani Gomes,,",
+"44,K4R7Y,Mini & Dr. Punjrath,2,Dr. Punjrath,Dr. Mrs. Mini Punjrath,,",
+"45,Y7N7N,Sashangar,1,Mr. Sashangar Sreetharan,,,",
+"46,S5E2P,Sundari,1,Ms. Sundari Thiagarajah,,,",
+"47,G2L7W,Heidi & Jamie,2,Mr. Jamie Cross,Mrs. Heidi Cross,,",
+"48,F0Z6I,Ishini & Jehan,2,Mr. Jehan Abayasekara,Mrs. Ishini Abayasekara,,",
+"49,F2D1P,Ki,1,Ms. Devaki Omprasadem,,,",
+"50,K1Y0M,Shani & Sriyan,2,Mr. Sriyan de Silva,Mrs. Shani de Silva ,,",
+"51,U5P3G,Hiranthi & Ashantha,2,Mr. Ashantha Goonetilleke,Mrs. Hiranthi Goonetilleke,,",
+"52,H4Z1R,Sandra & Mark,2,Mr. Mark Fonseka,Mrs. Sandra Fonseka,,",
+"53,P6L6F,Kym & Stuart,2,Mr. Stuart Young,Mrs. Stuart Young,,",
+"54,Q1R1C,Mr. & Mrs. John Tan,2,Mr. John Tan,Mrs. John Tan,,",
+"55,M6U0M,Saro & Sunil,2,Mr. Sunil Wirasinghe,Mrs. Saro Wirasinghe ,,",
+"56,W2E7Z,Nirupa & Nihal ,2,Mr. Nihal Wijeywickrama,Mrs. Nirupa Wijeywickrama,,",
+"57,E5M3H,Imesha, Binesh, Amaya & Avin,4,Mr. Binesh Perera,Mrs. Imesha Perera ,Amaya,Avin",
+"58,L0C3K,Sashi, Jayanath, Skylar, Sarai,4,Mr. Jayanath Pieris,Mrs. Sashi Pieris ,Skylar ,Sarai",
+"59,I3G4S,Marina & Ari,2,Mr. Ari Gamage,Mr. Marina Gamage,,",
+"60,Y5C5N,Sundari & Dayantha,2,Mr. Dayantha Siriwardena,Mrs. Sundari Siriwardena,,",
+"61,Y1B3W,Nirusha, Dushara & Jithendra,3,Mr. Dushara  Jayasinghe,Mrs. Nirusha Jayasinghe,Jithendra,",
+"62,E4G7F,Joanna, Duminda & Finley,3,Mr. Duminda Gamage,Mrs. Joanna Housden ,Finley,",
+"63,U5V8V,Manojini & Chamitha,2,Mr. Chamitha Gamage,Mrs. Manojini Gamage,,",
+"64,F3G2O,Aindri, Sanjaka, Tarini & Nivaan,4,Mr. Sanjaka Wirasingha,Mrs. Aindri Wirasingha,Tarini,Nivaan",
+"65,I9U6U,Tarena,1,Ms. Tarena Navaratne,,,",
+"66,J5J3K,Pastor Leslie & Belen,2,Rev. Dr. Leslie Keegal,Mrs. Belen Keegal,,",
+"67,T1O0F,Roshani & Niten,2,Mr. Niten Devalia,Mrs. Roshani Devalia,,",
+"68,U2J5W,Kishani & Naren,2,Mr. Naren Ganagavarapu,Dr. Mrs. Kishani Ganagavarapu,,"
+]
 
+    for (var i=0; i<testere.length; i++) {
+      var nameArr=[""];
+        var nameArr = testere[i].split(',');
+console.log(nameArr[2]);
         var docData = {
           id: parseInt(nameArr[0]),
           accessl: nameArr[1].trim().toLowerCase(),
-          inviteName: nameArr[2].trim(),
-          batch1: parseInt(nameArr[3]),
-          iporuwa: parseInt(nameArr[13]),
-          ireception: parseInt(nameArr[14]),
-          imehendi: parseInt(nameArr[12]),
-          iMehList: [nameArr[15],nameArr[16],nameArr[17],nameArr[18],nameArr[19],nameArr[20]],
-          iPorList: [nameArr[21],nameArr[22],nameArr[23],nameArr[24],nameArr[25],nameArr[26]],
-          iRecList: [nameArr[27],nameArr[28],nameArr[29],nameArr[30],nameArr[31],nameArr[32]],
-          contact: nameArr[33],
-          email: nameArr[34],
+          inviteName: nameArr[2],
+          iporuwa: parseInt(nameArr[3]),
+          iPorList: [nameArr[4],nameArr[5],nameArr[6],nameArr[7]],
           didMehSubmit: false,
           didPorSubmit: false,
           didRecSubmit: false
         };
 
-        db.collection("guest")
+
+
+        db.collection("guestrhaya2")
           .doc(nameArr[0])
           .set(docData)
           .then(function() {
             console.log("Document successfully written! - " + nameArr[0]);
           });
-        
+
     }
     console.log("Done success");
 
 }
-     
+
       function testero() {
         var name = document.getElementById("myTextarea").value;
         var nameArr = name.split(",");

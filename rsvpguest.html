@@ -121,10 +121,9 @@
         </div>
         <!-- </div> -->
         <br><Br><br><Br>
-          <!-- <p class="text-center" style="color:#c4758e ">
-            Made with <i class="glyphicon glyphicon-heart"></i><br /><a href="http://www.weddingsbysonali.com/">Weddings By Sonali</a>
-          </p>
-          <br /> -->
+          <hr>
+           ~ and so the adventure begins ~
+          					<br><br><br>
         </center>
         <script>
         var truthStore = {
@@ -156,7 +155,7 @@
 
         console.log("ID is: " + id);
 
-        db.collection("guestrhaya")
+        db.collection("guestrhaya2")
         .where("id", "==", id)
         .get()
         .then(function (querySnapshot) {
@@ -236,7 +235,7 @@
             didPorSubmit: true,
             rPorDiet: pordiet
           }
-          db.collection("guestrhaya").doc(urlObject.searchParams.get("id")).update(testers).then(function () {
+          db.collection("guestrhaya2").doc(urlObject.searchParams.get("id")).update(testers).then(function () {
             console.log("Document successfully updated - Poruwa!");
             document.getElementById("formPorLoader").style.display = "none";
             document.getElementById("rPorConfirm").style.display = "block";
