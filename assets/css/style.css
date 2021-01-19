@@ -66,6 +66,20 @@ padding: 30px 30px 30px 30px;
 
 text-align: center;
   }
+  .titleNameSmall{
+    font-family: Playfair Display;
+font-style: normal;
+font-weight: normal;
+font-size: 30px;
+line-height: 30px;
+/* identical to box height */
+
+
+color: #6E6E6E;
+padding: 30px 30px 30px 30px;
+
+text-align: left;
+  }
 
   .tablink{
     font-family: Garamond;
