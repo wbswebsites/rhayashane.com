@@ -1,1 +1,1 @@
-<?php include_once(“home.html”); echo "test"; ?>
+<?php header("Location: http://www.rhayashane.com/index.html"); ?>
