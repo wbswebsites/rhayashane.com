@@ -26,7 +26,7 @@
 	<script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
 
 
-  <title>Rhaya & Ashane</title>
+  <title>Rhaya & Ashane - RSVP Final List</title>
 </head>
 <body style="margin: 0 0 0 0; font-family: 'Crimson Text', serif; background-color:#FAF7F2; color:#6E6E6E" width="100%">
 
@@ -91,33 +91,16 @@
 
     <br /><br /><br />
     <center>
-      <h3>Guestbook</h3>
+      <h3>RSVP Final List</h3>
       <br />
-        <div style="width: 350px">
-
-          <!-- <span class="help-block">Your name</span> -->
-          <input
-            id="name"
-            name="name"
-            type="text"
-            placeholder="Enter your name"
-            class="form-control input-md text-center"
-            required=""
-          />
-          <br />
-          <textarea id="message" class="form-control input-md text-center" rows="5" cols="30" placeholder="Enter a message."></textarea>
-          <br>
-          <button
-        id="tester"
-        onclick="putnote()"
-        class="btn"
-        style="background-color:#6b6b6b; padding-left: 20px; padding-right: 20px;"
-      >
-        <span style="color: white">Submit</span></button
-        </div>
+You'll only see guests that have done the RSVP here.<br>
 
         <br />
-<br /><br /><br /><br /><br /><br /><hr>
+<div id="loading"></div>
+      <div id="empty"></div>
+      <div id="guestnotes"></div>
+<div id="found"></div>
+<br /><br /><br /><br /><br /><br /><br /><hr>
 ~ and so the adventure begins ~
 					<br><br><br>
     </center>
@@ -151,6 +134,60 @@
       firebase.initializeApp(firebaseConfig);
 
       const db = firebase.firestore();
+      loader();
+function loader(){
+    document.getElementById("loading").innerHTML = "<br><BR><img src='assets/spinner.gif' height=50 />";
+      truthStore.cur=-1;
+    //   var name = document.getElementById("textinput").value.toLowerCase();
+      document.getElementById("empty").innerHTML = " ";
+    //   document.getElementById("found1").innerHTML = " ";
+      document.getElementById("found").innerHTML = " ";
+      console.log("Hello world! "+name);
+      var readData = db.collection("guestrhaya2")
+      .get()
+      .then(function(querySnapshot) {
+
+        console.log("Founded it+");
+        if(querySnapshot.empty==true){
+        console.log("It's empty");
+        document.getElementById("loading").innerHTML = " ";
+          document.getElementById("empty").innerHTML = "<br><BR>It's empty now.";
+        //   document.getElementById("found1").innerHTML = " ";
+          document.getElementById("found").innerHTML = " ";
+        }
+
+        querySnapshot.forEach(function(doc) {
+
+            console.log("Founded it+"+doc.data().message);
+        document.getElementById("loading").innerHTML = " ";
+        //   if(truthStore.cur==-1)
+        //     document.getElementById("guestnotes").innerHTML ="<br>Guest book<br>";
+
+            console.log("Founded it+"+doc.data().messagei);
+            if(doc.data().didPorSubmit){
+
+          document.getElementById("found").innerHTML +="<h<br><br><b>"+ doc.data().inviteName+"</b><br><i><span style='font-size:1.2em'>"+doc.data().rPorList+"</span></i>";
+          if(doc.data().rPor==0){
+            document.getElementById("found").innerHTML +="<br> Not coming";
+          } else if(doc.data().rPor<doc.data().iporuwa){
+            document.getElementById("found").innerHTML +="<br>Some are not coming";
+          }
+document.getElementById("found").innerHTML +="<br>";
+
+}
+          truthStore.cur++;
+          truthStore.found[truthStore.cur]=doc.data();
+
+        // doc.data() is never undefined for query doc snapshots
+        // console.log(doc.id, " => ", doc.data());
+
+    }
+        );
+      })
+      .catch(function(error) {
+        console.log("Error getting documents: ", error);
+      });
+}
 
 
       function putnote(){
