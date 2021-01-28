@@ -93,12 +93,14 @@
     <center>
       <h3>Guestbook</h3>
       <br />
-
+<div stlye="max-width:350px">
         <br />
 <div id="loading"></div>
       <div id="empty"></div>
       <div id="guestnotes"></div>
 <div id="found"></div>
+
+</div>
 <br /><br /><br /><br /><br /><br /><br /><hr>
 ~ and so the adventure begins ~
 					<br><br><br>
@@ -163,7 +165,7 @@ function loader(){
         //     document.getElementById("guestnotes").innerHTML ="<br>Guest book<br>";
 
             console.log("Founded it+"+doc.data().messagei);
-          document.getElementById("found").innerHTML +="<br><br><b>"+ doc.data().name+"</b><br><i><span style='font-size:1.2em'>"+doc.data().message+"</span></i>";
+          document.getElementById("found").innerHTML +="<br><br>"+ doc.data().name+"<br><i><span style='font-size:1.2em'>"+doc.data().message+"</span></i>";
 
           truthStore.cur++;
           truthStore.found[truthStore.cur]=doc.data();
