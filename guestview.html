@@ -93,28 +93,6 @@
     <center>
       <h3>Guestbook</h3>
       <br />
-        <div style="width: 350px">
-
-          <!-- <span class="help-block">Your name</span> -->
-          <input
-            id="name"
-            name="name"
-            type="text"
-            placeholder="Enter your name"
-            class="form-control input-md text-center"
-            required=""
-          />
-          <br />
-          <textarea id="message" class="form-control input-md text-center" rows="5" cols="30" placeholder="Enter a message."></textarea>
-          <br>
-          <button
-        id="tester"
-        onclick="putnote()"
-        class="btn"
-        style="background-color:#6b6b6b; padding-left: 20px; padding-right: 20px;"
-      >
-        <span style="color: white">Submit</span></button
-        </div>
 
         <br />
 <div id="loading"></div>
@@ -185,7 +163,7 @@ function loader(){
         //     document.getElementById("guestnotes").innerHTML ="<br>Guest book<br>";
 
             console.log("Founded it+"+doc.data().messagei);
-          document.getElementById("found").innerHTML +="<br><br>"+ doc.data().name+"<br><i><span style='font-size:1.2em'>"+doc.data().message+"</span></i>";
+          document.getElementById("found").innerHTML +="<br><br><b>"+ doc.data().name+"</b><br><i><span style='font-size:1.2em'>"+doc.data().message+"</span></i>";
 
           truthStore.cur++;
           truthStore.found[truthStore.cur]=doc.data();
